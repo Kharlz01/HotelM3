@@ -61,13 +61,13 @@ const Navbar: FC<NavbarProps> = ({
         ref={ref}
         className='fixed w-full h-20 bg-white border border-b-gray-200 z-10'>
         <div className='size-full px-4 max-w mx-auto flex items-center justify-between'>
-          <a className='text-4xl font-["Teko"]'
+          <a className='text-xl md:text-4xl font-["Teko"]'
           href='/.'
           >Hotel <span className='text-sky-400'>M3</span></a>
-          <div className='ml-auto flex items-center gap-x-2'>
+          <div className='flex items-center gap-x-2'>
             <input
               type='search'
-              className='border border-gray-400 rounded-md py-2 px-6' 
+              className='border sm:w-full border-gray-400 rounded-md py-2 px-6' 
               placeholder='Buscar aqui'
               onChange={handleSearch} />
 

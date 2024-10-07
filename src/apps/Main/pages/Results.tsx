@@ -7,6 +7,7 @@ import { User } from "../../Shared/domain/User";
 
 import Stepper from "../../Shared/Components/Stepper";
 import HotelCard from "../sections/HotelCard";
+import RoomCard from "../sections/RoomCard2";
 
 type ResultsProps = object;
 
@@ -104,10 +105,10 @@ const Results: FC<ResultsProps> = () => {
   return (
     <section className="w-full min-h-screen h-screen overflow-hidden">
       <div className="max-w-[1366px] h-full mx-auto py-6">
-        <div className="w-full h-auto flex items-center gap-x-4">
+        <div className="w-full h-auto flex ml-20 items-center gap-x-4">
           {/* PASO 1 */}
           <span
-            className="text-lg leading-4 hover:cursor-pointer"
+            className="text-lg leading-4 hover:cursor-pointer "
             style={{
               ...(currentStep === 0 && {
                 fontWeight: 700,
@@ -165,7 +166,7 @@ const Results: FC<ResultsProps> = () => {
             {/* PASO 2 */}
             <div className="grow h-full w-full flex gap-x-6 flex-wrap">
               <ul className="w-full flex flex-col gap-y-4">
-                {!loading &&
+                {/* {!loading &&
                   results &&
                   results?.rooms?.length > 0 &&
                   results?.rooms?.map((room) => (
@@ -184,6 +185,12 @@ const Results: FC<ResultsProps> = () => {
                         <span>{room?.description}</span>
                       </div>
                     </li>
+                  ))} */}
+                {!loading &&
+                  results &&
+                  results?.rooms?.length > 0 &&
+                  results?.rooms?.map((room) => (
+                    <RoomCard key={room.id} room={room}/>
                   ))}
               </ul>
               {loading && <p>Cargando...</p>}

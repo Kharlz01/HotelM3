@@ -36,7 +36,7 @@ const Home: FC<HomeProps> = () => {
   return (
     <section className='h-screen w-full overflow-hidden'>
       <div className='size-full max-w-screen-2xl mx-auto px-6 py-6'>
-        <div className='size-full flex flex-wrap gap-4'>
+        <div className='size-full flex flex-wrap gap-4 ml-5'>
           {hotels && hotels.length > 0 && hotels.map(hotel => (
             <HotelCard key={hotel.id} hotel={hotel}/>
           ))}

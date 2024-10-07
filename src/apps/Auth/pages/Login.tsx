@@ -102,7 +102,9 @@ const Login: FC<LoginProps> = () => {
             {error && <div className="text-red-500 text-sm mb-4">{error}</div>}
 
             <button
-              className="bg-cyan-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              className={`bg-cyan-500  hover:bg-blue-700 text-white 
+                font-bold py-2 px-4 rounded focus:outline-none 
+                focus:shadow-outline ${loading && ("animate-bounce mt-2")}`}
               type="submit"
             >
               {!loading ? "Confirmar" : "Cargando..."}
