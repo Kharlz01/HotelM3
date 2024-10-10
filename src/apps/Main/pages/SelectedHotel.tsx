@@ -51,7 +51,7 @@ const SelectedHotel: FC<SelectedHotelProps> = () => {
             <div className="size-full flex gap-x-6">
               <div className="size-full flex flex-col gap-y-4 overflow-y-auto">
                 {hotel?.rooms &&
-                  hotel?.rooms.length > 0 &&
+                  hotel?.rooms.length > 0 ?
                   hotel?.rooms.map((room) => (
                     <section className="flex p-4 rounded-md border border-gray-400">
                       <div className="w-1/2">
@@ -90,7 +90,9 @@ const SelectedHotel: FC<SelectedHotelProps> = () => {
                         )}
                       </div>
                     </section>
-                  ))}
+                  )) : (<p>
+                    Lo sentimos, no hay habitaciones disponible para mostrar de este hotel
+                  </p>)}
               </div>
               <div className="size-full flex flex-col items-center justify-center">
                 <div className="size-full flex flex-col gap-y-4">
