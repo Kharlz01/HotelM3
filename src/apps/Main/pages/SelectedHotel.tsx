@@ -90,7 +90,7 @@ const SelectedHotel: FC<SelectedHotelProps> = () => {
                         )}
                       </div>
                     </section>
-                  )) : (<p>
+                  )) : (<p className="font-sans text-xl font-bold">
                     Lo sentimos, no hay habitaciones disponible para mostrar de este hotel
                   </p>)}
               </div>
