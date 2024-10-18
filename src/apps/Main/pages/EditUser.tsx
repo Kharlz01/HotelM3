@@ -4,7 +4,7 @@ import {
   useCallback,
   useEffect,
   useState,
-  // useRef,
+  useRef,
 } from "react";
 
 import { useNavigate } from "react-router-dom";
@@ -22,11 +22,12 @@ const EditUser: FC<EditUserProps> = () => {
 
 // Variables a futuro para cambios de contraseña
 
-  // const [error2, setError2] = useState<string>("");
-  // const [pass2, setPass2] = useState<string>("");
-  // const [loading2, setLoading2] = useState<boolean>(false);
-  // const [pss, setPss] = useState<string>("");
-  // const pss2 = useRef<HTMLInputElement>(null);
+  const [error2, setError2] = useState<string>("");
+  const [pass2, setPass2] = useState<string>("");
+  const [loading2, setLoading2] = useState<boolean>(false);
+  const [pss, setPss] = useState<string>("");
+  const [pssOld, setPssOld] = useState<string>("");
+  const pss2 = useRef<HTMLInputElement>(null);
 
   const [data, setData] = useState<User>({
     id: "",
@@ -120,68 +121,80 @@ const EditUser: FC<EditUserProps> = () => {
     setLoading(false);
   };
 
+  const handlePasswordOld: (event: ChangeEvent<HTMLInputElement>) => void = (
+    e
+  ) => {
+    const value = e.target.value;
+    setPssOld(value);
+  };
 
+  const handlePassword: (event: ChangeEvent<HTMLInputElement>) => void = (
+    e
+  ) => {
+    const value = e.target.value;
+    setPss(value);
+  };
 
-  // const handlePassword: (event: ChangeEvent<HTMLInputElement>) => void = (
-  //   e
-  // ) => {
-  //   const value = e.target.value;
-  //   setPss(value);
-  // };
+  const changePassword: () => void = async () => {
+    setLoading2(true);
 
-  // const changePassword: () => void = async () => {
-  //   setLoading2(true);
+    if (!pss || pss === "" || !pss2) {
+      setError2("Hay campos requeridos vacios, complete la informacion.");
+      throw new Error(`Valor de constraseña vacio`);
+    }
 
-  //   if (!pss || pss === "" || !pss2) {
-  //     setError2("Hay campos requeridos vacios, complete la informacion.");
-  //     throw new Error(`Valor de constraseña vacio`);
-  //   }
+    if (pss !== pss2?.current?.value) {
+      setError2("Las contraseñas no coinciden");
+      throw new Error(error);
+    }
 
-  //   if (pss !== pss2?.current?.value) {
-  //     setError2("Las contraseñas no coinciden");
-  //     throw new Error(error);
-  //   }
+    const passwordData = {
+      currentPassword: pssOld,
+      newPassword: pss,
+    }
 
-  //   setData((previousState) => ({
-  //     ...previousState,
-  //     password: pss,
-  //   }));
+    // setData((previousState) => ({
+    //   ...previousState,
+    //   currentPassword: pssOld,
+    //   newPassword: pss,
+    // }));
 
-  //   console.log(pss);
-  //   console.log(data.password);
+    console.log(pss);
+    // console.log(data.password);
     
     
-  //   const endpoint = `${url}/users/settings/${data.id}`;
-  //   const request = await fetch(endpoint, {
-  //     method: "PUT",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //       Authorization: `Bearer ${localStorage.getItem("token")}`,
-  //     },
-  //     body: JSON.stringify(data),
-  //   });
+    const endpoint = `${url}/users/changePassword`;
 
-  //   const response = await request.json();
+    const request = await fetch(endpoint, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+      body: JSON.stringify(passwordData),
+    });
 
-  //   if ("success" in response && response.success) {
-  //     setPass2(
-  //       `Contraseña cambiada con exito, sera redirigido al menu de inicio.`
-  //     );
-  //     setLoading2(false);
+    const response = await request.json();
 
-  //     setTimeout(() => {
-  //       setConf(true);
-  //       navigate("/.");
-  //     }, 2000);
-  //   } else {
-  //     setError(response.message);
-  //   }
+    if ("success" in response && response.success) {
+      setPass2(
+        `Contraseña cambiada con exito, sera redirigido al menu de inicio.`
+      );
+      setLoading2(false);
 
-  //   setLoading2(false);
-  // };
+      setTimeout(() => {
+        setConf(true);
+        navigate("/.");
+      }, 2000);
+    } else {
+      setError(response.message);
+    }
+
+    setLoading2(false);
+  };
 
   return (
-    <section className="h-screen w-full overflow-hidden">
+    <section className="h-full w-full overflow-hidden">
       <div className="size-full max-w-screen-2xl mx-auto">
         <div className="size-full flex justify-center items-center">
           <article className="h-auto w-full max-w-screen-md p-12 shadow-md border border-black rounded-lg">
@@ -287,7 +300,7 @@ const EditUser: FC<EditUserProps> = () => {
                 {!loading ? "Confirmar" : "Cargando..."}
               </button>
             </div>
-            {/* <div className="mt-10">
+            <div className="mt-10">
               <div className="pt-4 border-t-2 border-blue-900 border-dotted">
                 <h2 className="text-center text-4xl font-bold pt-4">
                   Seguridad
@@ -295,6 +308,21 @@ const EditUser: FC<EditUserProps> = () => {
                 <p className="text-center pt-4 font-serif">
                   Si lo deseas aqui puedes cambiar tu contraseña:
                 </p>
+                <div className="mb-4">
+                  <label
+                    className="block text-gray-700 text-sm font-bold mb-2"
+                    htmlFor="password"
+                  >
+                    Contraseña actual:
+                  </label>
+                  <input
+                    id="password"
+                    type="password"
+                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    value={pssOld}
+                    onChange={handlePasswordOld}
+                  />
+                </div>
                 <div className="mb-4">
                   <label
                     className="block text-gray-700 text-sm font-bold mb-2"
@@ -337,8 +365,8 @@ const EditUser: FC<EditUserProps> = () => {
                 >
                   {!loading2 ? "Confirmar" : "Cargando..."}
                 </button>
-              </div> */}
-            {/* </div> */}
+              </div>
+             </div>
           </article>
         </div>
       </div>
